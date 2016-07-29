@@ -33,14 +33,14 @@
 // we'll implement getProcessCPUTime() and getProcessElapsedTime()
 // separately, using getrusage() and gettimeofday() respectively
 
-#ifdef darwin_HOST_OS
+#if defined(darwin_HOST_OS) && defined(DARWIN_IGNORE_CLOCK_GETTIME)
 static uint64_t timer_scaling_factor_numer = 0;
 static uint64_t timer_scaling_factor_denom = 0;
 #endif
 
 void initializeTimer()
 {
-#ifdef darwin_HOST_OS
+#if defined(darwin_HOST_OS) && defined(DARWIN_IGNORE_CLOCK_GETTIME)
     mach_timebase_info_data_t info;
     (void) mach_timebase_info(&info);
     timer_scaling_factor_numer = (uint64_t)info.numer;
@@ -52,6 +52,7 @@ Time getProcessCPUTime(void)
 {
 #if !defined(BE_CONSERVATIVE)            &&  \
        defined(HAVE_CLOCK_GETTIME)       &&  \
+       !defined(DARWIN_IGNORE_CLOCK_GETTIME) && \
        defined(_SC_CPUTIME)             &&  \
        defined(CLOCK_PROCESS_CPUTIME_ID) &&  \
        defined(HAVE_SYSCONF)
@@ -85,7 +86,7 @@ Time getProcessCPUTime(void)
 
 StgWord64 getMonotonicNSec(void)
 {
-#if defined(HAVE_CLOCK_GETTIME)
+#if defined(HAVE_CLOCK_GETTIME) && !defined(DARWIN_IGNORE_CLOCK_GETTIME)
     struct timespec ts;
     int res;
 
@@ -194,6 +195,7 @@ Time getThreadCPUTime(void)
 
 #elif !defined(BE_CONSERVATIVE)            &&  \
        defined(HAVE_CLOCK_GETTIME)       &&  \
+       !defined(DARWIN_IGNORE_CLOCK_GETTIME) && \
        defined(_SC_CPUTIME)             &&  \
        defined(CLOCK_PROCESS_CPUTIME_ID) &&  \
        defined(HAVE_SYSCONF)
