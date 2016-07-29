@@ -21,15 +21,16 @@
 # include <sys/time.h>
 #endif
 
-#ifdef HAVE_CLOCK_GETTIME
+#if defined(darwin_HOST_OS) && MAC_OS_X_VERSION_MIN_REQUIRED < 101200
+# define DARWIN_IGNORE_CLOCK_GETTIME
+# include <mach/mach.h>
+# include <mach/mach_time.h>
+#elif defined(HAVE_CLOCK_GETTIME)
 # ifdef _POSIX_MONOTONIC_CLOCK
 #  define CLOCK_ID CLOCK_MONOTONIC
 # else
 #  define CLOCK_ID CLOCK_REALTIME
 # endif
-#elif defined(darwin_HOST_OS)
-# include <mach/mach.h>
-# include <mach/mach_time.h>
 #endif
 
 #endif /* POSIX_CLOCK_H */
