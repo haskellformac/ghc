@@ -8,7 +8,7 @@
 	ignore = untracked
 [submodule "libraries/Cabal"]
 	path = libraries/Cabal
-	url = ../packages/Cabal.git
+	url = ../../ghc/packages-Cabal.git
 	ignore = untracked
 	branch = 1.24
 [submodule "libraries/containers"]
