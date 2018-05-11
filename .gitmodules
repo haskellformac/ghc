@@ -65,7 +65,7 @@
 	ignore = none
 [submodule "libraries/directory"]
 	path = libraries/directory
-	url = ../../ghc/packages-directory.git
+	url = ../packages-directory.git
 	ignore = none
 [submodule "libraries/filepath"]
 	path = libraries/filepath
@@ -85,7 +85,7 @@
 	ignore = none
 [submodule "libraries/unix"]
 	path = libraries/unix
-	url = ../../ghc/packages-unix.git
+	url = ../packages-unix.git
 	ignore = none
 [submodule "libraries/parallel"]
 	path = libraries/parallel
